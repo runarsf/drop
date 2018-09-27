@@ -31,15 +31,22 @@ helpme () {
 }
 
 add () {
-	if [[ `grep -n "${OPTARG}" ./lists/main.pool` != "" ]]; then
+
+	if [[ `grep -nw "${OPTARG}" ./lists/main.pool` != "" ]]; then
 		printf "\n ${COLOR_ORANGE}Entrypoint already exists!${COLOR_NONE}"
 	else
-		echo "- [] ${OPTARG}"	>> ./lists/main.pool
+		echo "-[]${OPTARG}"	>> ./lists/main.pool
 	fi
 }
 
 remove () {
-	printf "ok"
+	while read p; do
+  	if [ $p == "-[]${OPTARG}" ]; then
+			sed -i 's/${OPTARG}//gi' ./lists/main.pool
+		else
+			echo "false"
+		fi
+	done <./lists/main.pool
 }
 
 while getopts a:r:s: option
