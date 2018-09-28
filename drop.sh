@@ -31,7 +31,6 @@ helpme () {
 }
 
 add () {
-
 	if [[ `grep -nw "${OPTARG}" ./lists/main.pool` != "" ]]; then
 		printf "\n ${COLOR_ORANGE}Entrypoint already exists!${COLOR_NONE}"
 	else
@@ -41,8 +40,8 @@ add () {
 
 remove () {
 	while read p; do
-  	if [ $p == "-[]${OPTARG}" ]; then
-			sed -i 's/${OPTARG}//gi' ./lists/main.pool
+  	if [[ $p == "-[]${OPTARG}" ]]; then
+			sed -i -e "s/-\[]${OPTARG}//g" ./lists/main.pool
 		else
 			echo "false"
 		fi
