@@ -75,12 +75,12 @@ def check():
     for line in file:
         i += 1
         if i == int(sys.argv[2]):
-            newline = line
-            print(newline)
+            preserveLine = line
+            print(preserveLine)
     file.close()
-    setline = newline.replace("-[]", "-[x]")
+    setline = preserveLine.replace("-[]", "-[x]")
     print(setline)
-    subprocess.call(["sed", "-i", "-e", "s///g", c.filepath+c.filename])
+    subprocess.call(["sed", "-i", "-e", "s/asd//g", c.filepath+c.filename])
 
 def remove():
     pass
