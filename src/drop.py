@@ -1,5 +1,6 @@
 """ main """
 import os
+import subprocess
 import sys
 
 def verify():
@@ -36,23 +37,20 @@ import config as c
 
 def helpme():
     print('\n\tUsage: python3 drop.py [arguments]\n')
-    print('\t       *           No argument, shows list contents.')
+    print('\t                   No argument, shows list contents.')
     print('\t       -l          Same as no argument, Lists out list content.')
     print('\t       -h          Shows this dialog.')
     print('\t       -c          Check/uncheck list.')
     print('\t       -s List     Sets which todo list to use.')
-    print('\t                   Creates it if not existing.')
     print('\t       -a Content  Adds an entry to your todo list.')
     print('\t       -r Index    Removes an entry from your todo list.')
     print('')
 
 def add():
     try:
-        fileAdd = open(c.filepath+c.filename, 'a+')
-        fileAdd.write('\n-[]'+sys.argv[2])
-        fileAdd.close()
-        #print(c.filepath+c.filename)
-        #print('-[]'+sys.argv[2])
+        file = open(c.filepath+c.filename, 'a+')
+        file.write('\n-[]'+sys.argv[2])
+        file.close()
     except:
         print("Could not add entry to list.\nExiting...\n")
         raise SystemExit
@@ -60,19 +58,29 @@ def add():
 def display():
     try:
         print('')
-        fileRead = open(c.filepath+c.filename, 'r')
+        file = open(c.filepath+c.filename, 'r')
         i = 0
-        for line in fileRead:
+        for line in file:
             i += 1
             print(str("{}   ".format(i)+line.strip("\n")))
-        fileRead.close()
+        file.close()
         print('')
     except:
         print("Could not display list contents.\nExiting...\n")
         raise SystemExit
 
 def check():
-    pass
+    file = open(c.filepath+c.filename, 'r')
+    i = 0
+    for line in file:
+        i += 1
+        if i == int(sys.argv[2]):
+            newline = line
+            print(newline)
+    file.close()
+    setline = newline.replace("-[]", "-[x]")
+    print(setline)
+    subprocess.call(["sed", "-i", "-e", "s///g", c.filepath+c.filename])
 
 def remove():
     pass
@@ -86,8 +94,10 @@ if len(sys.argv) > 3:
 
 if len(sys.argv) <= 1 or '-l' in sys.argv:
     display()
+    raise SystemExit # prevent display from being ran twice, see bottom of file
 elif '-h' in sys.argv:
     helpme()
+    raise SystemExit # prevent display from being ran twice, see bottom of file
 elif '-a' in sys.argv:
     add()
 elif '-r' in sys.argv:
@@ -96,5 +106,9 @@ elif '-s' in sys.argv:
     setList()
 elif '-c' in sys.argv:
     check()
+    #raise SystemExit # prevent display from being ran twice, see bottom of file
 else:
     print('Unknown operation: {}'.format(sys.argv))
+
+display()
+raise SystemExit
