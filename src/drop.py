@@ -45,8 +45,7 @@ def helpme():
     print('\t       -f Path     Sets list dir (folder)')
     print('\t       -a Content  Adds an entry to your todo list.')
     print('\t       -r Index    Removes an entry from your todo list.')
-    print('\t       -p          Purge completed tasks. Preserves them in ./finishedTasks')
-    print('\t       -d          Delete all completed tasks.')
+    print('\t       -p          Purge completed tasks.')
     print('')
 
 def add():
@@ -98,28 +97,59 @@ def remove():
             file.writelines( data )
 
 def setList():
-    print('')
-        file = open('config.py', 'r')
-        i = 0
-        for line in file:
-            i += 1
-            if "filename" in line:
-                with open(c.filepath+c.filename, 'r') as file:
-                    data = file.readlines()
-                    data[int(sys.argv[2])-1] = ""
-                    with open(c.filepath+c.filename, 'w') as file:
-                        file.writelines( data )
-            
-        file.close()
-        print('')
+    file = open('config.py', 'r')
+    i = 0
+    for line in file:
+        i += 1
+        if "filename" in line:
+            with open('config.py', 'r') as file:
+                data = file.readlines()
+                data[i-1] = "\nfilename='{}'\n".format(sys.argv[2])
+                with open('config.py', 'w') as file:
+                        file.writelines( data )   
+                file.close()
+
+                f = open('config.py', 'r')
+                l = [l for l in f.readlines() if l.strip()]
+                f.close()
+                f = open('config.py', 'w+')
+                f.writelines( l )
+                f.close()
 
 def setFolder():
+    file = open('config.py', 'r')
+    i = 0
+    for line in file:
+        i += 1
+        if "filepath" in line:
+            with open('config.py', 'r') as file:
+                data = file.readlines()
+                data[i-1] = "\nfilepath='{}'\n".format(sys.argv[2])
+                with open('config.py', 'w') as file:
+                        file.writelines( data )   
+                file.close()
+
+                f = open('config.py', 'r')
+                l = [l for l in f.readlines() if l.strip()]
+                f.close()
+                f = open('config.py', 'w+')
+                f.writelines( l )
+                f.close()
 
 def purge():
-    pass
+    bad_words = ['-[x]']
 
-def delete():
-    pass
+    with open(c.filepath+c.filename) as oldfile, open(c.filepath+c.filename+".tmp", 'w') as newfile:
+        for line in oldfile:
+            if not any(bad_word in line for bad_word in bad_words):
+                newfile.write(line)
+    with open(c.filepath+c.filename+".tmp") as f:
+        with open(c.filepath+c.filename, "w") as f1:
+            for line in f:
+                f1.write(line)
+    f.close()
+    f1.close()
+    os.remove(c.filepath+c.filename+".tmp")
 
 if len(sys.argv) > 3:
     print('Too many arguments!')
@@ -137,15 +167,15 @@ elif '-r' in sys.argv:
     remove()
 elif '-s' in sys.argv:
     setList()
+    raise SystemExit
 elif '-f' in sys.argv:
     setFolder()
+    raise SystemExit
 elif '-c' in sys.argv:
     check()
     #raise SystemExit # prevent display from being ran twice, see bottom of file
 elif '-p' in sys.argv:
     purge()
-elif '-d' in sys.argv:
-    delete()
 else:
     print('Unknown operation: {}'.format(sys.argv))
 

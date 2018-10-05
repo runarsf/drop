@@ -1,2 +1,2 @@
-filename = 'main'
-filepath = './lists/'
+filename='main'
+filepath='./lists/'
