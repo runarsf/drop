@@ -36,7 +36,7 @@ verify()
 import config as c
 
 def helpme():
-    print('\n\tUsage: python3 drop.py [arguments]\n')
+    print('\n\tUsage: python3 punct.py [arguments]\n')
     print('\t                   No argument, shows list contents.')
     print('\t       -l          Same as no argument, Lists out list content.')
     print('\t       -h          Shows this dialog.')
@@ -106,7 +106,7 @@ def setList():
                 data = file.readlines()
                 data[i-1] = "\nfilename='{}'\n".format(sys.argv[2])
                 with open('config.py', 'w') as file:
-                        file.writelines( data )   
+                        file.writelines( data )
                 file.close()
 
                 f = open('config.py', 'r')
@@ -126,7 +126,7 @@ def setFolder():
                 data = file.readlines()
                 data[i-1] = "\nfilepath='{}'\n".format(sys.argv[2])
                 with open('config.py', 'w') as file:
-                        file.writelines( data )   
+                        file.writelines( data )
                 file.close()
 
                 f = open('config.py', 'r')

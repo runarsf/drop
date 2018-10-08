@@ -1,4 +1,4 @@
-# drop is an incredibly simple command-line todo-list manager with a bunch of features
+# punct is an incredibly simple command-line todo-list manager with a bunch of features
 
-### Access drop from anywhere on the system using alias:
-```alias drop='cd ~/git/drop/src/ && python drop.py'```
+### Access punct from anywhere on the system using alias:
+```alias punct='cd ~/git/punct/src/ && python punct.py'```
