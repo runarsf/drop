@@ -6,19 +6,27 @@ def read(fname):
 
 setup(
     name = "punct",
-    version = "1.0",
+    version = "1.0.1",
     author = "Runar Fredagsvik",
-    author_email = "runar.fredagsvik@gmail.com",
+    author_email = "runarsf@protonmail.com",
     description = ("A simple todo-list manager."),
     license = "MIT",
     keywords = "todo open-source",
-    url = "http",
-    packages=['an_example_pypi_project', 'tests'],
+    url = "https://github.com/runarsf/punct",
+    py_modules = ["punct"],
+    # packages=['os', 'sys', 'subprocess'],
     long_description=read('README.md'),
+    # https://pypi.org/pypi?%3Aaction=list_classifiers
+    entry_points='''
+        [console_scripts]
+        punct=punct:main
+    ''',
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
-        "License :: OSI Approved :: BSD License",
+        "Environment :: Console",
+        "License :: OSI Approved :: MIT License",
+        "Intended Audience :: End Users/Desktop",
     ],
 )
 

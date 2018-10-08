@@ -1,4 +1,3 @@
-*.pool
 *.log
 __pycache__
 lists/*
