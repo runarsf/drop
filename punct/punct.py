@@ -1,7 +1,16 @@
-""" main """
+# -*- coding: utf-8 -*-
+
+
+"""punct.punct: provides entry point main()."""
+
+
+__version__ = "latest"
+
+
 import os
 import subprocess
 import sys
+
 
 def verify():
     try:

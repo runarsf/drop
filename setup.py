@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+
+"""setup.py: setuptools control."""
+
+
 import os
 from setuptools import setup
 
@@ -6,21 +12,20 @@ def read(fname):
 
 setup(
     name = "punct",
-    version = "1.0.1",
+    packages = ["punct"],
+    entry_points = {
+        "console_scripts": ['punct = punct.punct:main']
+	},
+    version = "1.0.2",
+    description = ("A simple todo-list manager."),
+    long_description=read('README.rst'),
     author = "Runar Fredagsvik",
     author_email = "runarsf@protonmail.com",
-    description = ("A simple todo-list manager."),
-    license = "MIT",
-    keywords = "todo open-source",
     url = "https://github.com/runarsf/punct",
-    py_modules = ["punct"],
-    # packages=['os', 'sys', 'subprocess'],
-    long_description=read('README.md'),
+
+    keywords = "todo open-source",
+    license = "MIT",
     # https://pypi.org/pypi?%3Aaction=list_classifiers
-    entry_points='''
-        [console_scripts]
-        punct=punct:main
-    ''',
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",

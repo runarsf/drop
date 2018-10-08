@@ -1,0 +1,33 @@
+Metadata-Version: 1.1
+Name: punct
+Version: 1.0.2
+Summary: A simple todo-list manager.
+Home-page: https://github.com/runarsf/punct
+Author: Runar Fredagsvik
+Author-email: runarsf@protonmail.com
+License: MIT
+Description: punct
+        =====
+        
+        Punct is a simplistic todo-list for the shell, made in python.
+        
+        Installation
+        ------------
+        
+        Not buildable through pip yet. This is a hacky workaround ( unix ):
+        *******************************************************************
+        
+        1) run in terminal::
+        
+            pip3 install --upgrade punct
+        
+        2) Add this to your shell's .rc file::
+        
+            alias punct='cd ~/git/punct/src/ && python punct.py'
+Keywords: todo open-source
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Topic :: Utilities
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: End Users/Desktop

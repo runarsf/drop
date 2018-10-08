@@ -1,0 +1,12 @@
+LICENSE
+MANIFEST.in
+README.rst
+setup.py
+punct/__init__.py
+punct/__main__.py
+punct/punct.py
+punct.egg-info/PKG-INFO
+punct.egg-info/SOURCES.txt
+punct.egg-info/dependency_links.txt
+punct.egg-info/entry_points.txt
+punct.egg-info/top_level.txt
