@@ -1,3 +1,5 @@
 *.pool
 *.log
 __pycache__
+lists/*
+src/lists/*
