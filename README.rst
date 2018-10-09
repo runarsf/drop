@@ -7,7 +7,8 @@
 Prerequisites
 -------------
 
--  Python 3.7.0 or higher
+- Python 3.7.0 or higher
+- pip 18.1 (Python 3.7.0) or higher
 
 Installation
 ------------
