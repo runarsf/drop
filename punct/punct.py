@@ -16,8 +16,8 @@ def verify():
     try:
         import config as c
     except:
-        if not os.path.isfile('config.py'):
-            confile = open('config.py', 'w+')
+        if not os.path.isfile('./config.py'):
+            confile = open('./config.py', 'w+')
 
             confile.write('filename = \'main\'\n')
             confile.write('filepath = \'./lists/\'')

@@ -16,7 +16,7 @@ setup(
     entry_points = {
         "console_scripts": ['punct = punct.punct:main']
 	},
-    version = "1.0.2",
+    version = "1.0.4",
     description = ("A simple todo-list manager."),
     long_description=read('README.rst'),
     author = "Runar Fredagsvik",

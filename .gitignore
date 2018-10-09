@@ -2,3 +2,7 @@
 __pycache__
 lists/*
 src/lists/*
+dist/
+dist
+dist/*
+*.egg-info
