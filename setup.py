@@ -3,9 +3,16 @@
 
 """setup.py: setuptools control."""
 
-
+import re
 import os
 from setuptools import setup
+
+
+version = re.search(
+    '^__version__\s*=\s*"(.*)"',
+    open('punct/punct.py').read(),
+    re.M
+    ).group(1)
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -16,7 +23,7 @@ setup(
     entry_points = {
         "console_scripts": ['punct = punct.punct:main']
 	},
-    version = "1.0.4",
+    version = version,
     description = ("A simple todo-list manager."),
     long_description=read('README.rst'),
     author = "Runar Fredagsvik",
