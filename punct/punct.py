@@ -4,7 +4,7 @@
 """punct.punct: provides entry point main()."""
 
 
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 
 
 import os
@@ -13,18 +13,20 @@ import sys
 
 from .config import Conf
 
+path = (os.path.dirname(os.path.realpath(__file__)))
+
 def verify():
-    if not os.path.exists(Conf("path")):
+    if not os.path.exists(path+Conf("path")):
         try:
             print("Creating file directory")
-            os.makedirs(Conf("path"))
+            os.makedirs(path+Conf("path"))
         except:
             print("Could not create directory. Check config formatting.\nExiting...")
             raise SystemExit
-    if not os.path.isfile(Conf("path")+Conf("file")):
+    if not os.path.isfile(path+Conf("path")+Conf("file")):
         try:
             print("Creating file")
-            file = open(Conf("path")+Conf("file"), 'w+')
+            file = open(path+Conf("path")+Conf("file"), 'w+')
             file.close()
         except:
             print("Could not create file. Check config formatting.\nExiting...")
@@ -46,7 +48,7 @@ def helpme():
 
 def add():
     try:
-        file = open(Conf("path")+Conf("file"), 'a+')
+        file = open(path+Conf("path")+Conf("file"), 'a+')
         file.write('\n-[]'+sys.argv[2])
         file.close()
     except:
@@ -55,10 +57,10 @@ def add():
 
 def display():
     try:
-        f = open(Conf("path")+Conf("file"), 'r')
+        f = open(path+Conf("path")+Conf("file"), 'r')
         l = [l for l in f.readlines() if l.strip()]
         f.close()
-        f = open(Conf("path")+Conf("file"), 'w+')
+        f = open(path+Conf("path")+Conf("file"), 'w+')
         f.writelines( l )
         f.close()
     except:
@@ -66,7 +68,7 @@ def display():
         raise SystemExit
     finally:
         print('')
-        file = open(Conf("path")+Conf("file"), 'r')
+        file = open(path+Conf("path")+Conf("file"), 'r')
         i = 0
         for line in file:
             i += 1
@@ -75,21 +77,21 @@ def display():
         print('')
 
 def check():
-    with open(Conf("path")+Conf("file"), 'r') as file:
+    with open(path+Conf("path")+Conf("file"), 'r') as file:
         data = file.readlines()
         if data[int(sys.argv[2])-1][:3] == "-[]":
             data[int(sys.argv[2])-1] = data[int(sys.argv[2])-1].replace("-[]", "-[x]")
         else:
             data[int(sys.argv[2])-1] = data[int(sys.argv[2])-1].replace("-[x]", "-[]")
-        with open(Conf("path")+Conf("file"), 'w') as file:
+        with open(path+Conf("path")+Conf("file"), 'w') as file:
             file.writelines( data )
 
 
 def remove():
-    with open(Conf("path")+Conf("file"), 'r') as file:
+    with open(path+Conf("path")+Conf("file"), 'r') as file:
         data = file.readlines()
         data[int(sys.argv[2])-1] = ""
-        with open(Conf("path")+Conf("file"), 'w') as file:
+        with open(path+Conf("path")+Conf("file"), 'w') as file:
             file.writelines( data )
 
 # def setList():
@@ -135,17 +137,17 @@ def remove():
 def purge():
     bad_words = ['-[x]']
 
-    with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as newfile:
+    with open(path+Conf("path")+Conf("file")) as oldfile, open(path+Conf("path")+Conf("file")+".tmp", 'w') as newfile:
         for line in oldfile:
             if not any(bad_word in line for bad_word in bad_words):
                 newfile.write(line)
-    with open(Conf("path")+Conf("file")+".tmp") as f:
-        with open(Conf("path")+Conf("file"), "w") as f1:
+    with open(path+Conf("path")+Conf("file")+".tmp") as f:
+        with open(path+Conf("path")+Conf("file"), "w") as f1:
             for line in f:
                 f1.write(line)
     f.close()
     f1.close()
-    os.remove(Conf("path")+Conf("file")+".tmp")
+    os.remove(path+Conf("path")+Conf("file")+".tmp")
 
 if len(sys.argv) > 3:
     print('Too many arguments!')
