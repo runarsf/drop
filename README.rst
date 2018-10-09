@@ -1,18 +1,32 @@
-punct
-=====
+---------
+**Punct**
+---------
 
-Punct is a simplistic todo-list for the shell, made in python.
+    Punct is a simple shell application to manage all your todo-lists, made in python.
+
+Prerequisites
+-------------
+
+-  Python 3.7.0 or higher
 
 Installation
 ------------
 
-Not buildable through pip yet. This is a hacky workaround ( unix ):
-*******************************************************************
+- Initial install::
 
-1) run in terminal::
+    pip install punct
 
-    pip3 install --upgrade punct
+- Updating::
 
-2) Add this to your shell's .rc file::
+    pip install --upgrade punct
 
-    alias punct='cd ~/git/punct/src/ && python punct.py'
+Usage
+-----
+
+ -l            Shows list contents.
+              Executes on no argument as well.
+ -h            Help dialog.
+ -c Index      Check/Uncheck list item.
+ -r Index      Remove list item.
+ -a Content    Add an entry to the bottom of your list.
+ -p            Purge all completed tasks. This is irreversible.

@@ -4,7 +4,7 @@
 """punct.punct: provides entry point main()."""
 
 
-__version__ = "1.0.7"
+__version__ = "1.1.1"
 
 
 import os
@@ -17,7 +17,7 @@ def verify():
     if not os.path.exists(Conf("path")):
         try:
             print("Creating file directory")
-            os.makedirs(Conf("file"))
+            os.makedirs(Conf("path"))
         except:
             print("Could not create directory. Check config formatting.\nExiting...")
             raise SystemExit
@@ -32,7 +32,7 @@ def verify():
 verify()
 
 def helpme():
-    print('\n\tUsage: python3 punct.py [arguments]\n')
+    print('\n\tUsage: python punct.py [arguments]\n')
     print('\t                   No argument, shows list contents.')
     print('\t       -l          Same as no argument, Lists out list content.')
     print('\t       -h          Shows this dialog.')
