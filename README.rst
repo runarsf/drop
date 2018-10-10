@@ -30,9 +30,10 @@ Usage
 
  ``punct [args]``
 
+ -h            Help dialog.
+ -v            Version.
  -l            Shows list contents.
                Executes on no argument as well.
- -h            Help dialog.
  -c Index      Check/Uncheck list item.
  -r Index      Remove list item.
  -a Content    Add an entry to the bottom of your list.

@@ -34,9 +34,10 @@ verify()
 
 def helpme():
     print('\n\tUsage: punct [args]\n')
-    print('\t                   No argument, shows list contents.')
-    print('\t       -l          Same as no argument, Lists out list content.')
     print('\t       -h          Shows this dialog.')
+    print('\t       -v          Version.')
+    print('\t       -l          Shows list contents.\n\
+                            Executes on no argument as well')
     # print('\t       -s List     Sets which todo list to use.')
     # print('\t       -f Path     Sets list dir (folder)')
     print('\t       -c Index    Check/uncheck list item.')
