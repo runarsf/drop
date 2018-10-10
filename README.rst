@@ -12,7 +12,7 @@ Prerequisites
 - Packages::
 
 	Standard:
-	    os, sys, getpass, shutil
+	    os, sys, getpass
 
 Installation
 ------------
@@ -28,6 +28,8 @@ Installation
 Usage
 -----
 
+ ``punct [args]``
+
  -l            Shows list contents.
                Executes on no argument as well.
  -h            Help dialog.
@@ -37,3 +39,4 @@ Usage
  -p            Purge all completed tasks. 
  			   Creates backup file with the purged tasks.
  -d            Deletes all completed tasks. Irreversible.
+ -m            Merge list and list-backup, deleting backup.

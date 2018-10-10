@@ -4,12 +4,11 @@
 """punct.punct: provides entry point main()."""
 
 
-__version__ = "1.1.5"
+__version__ = "1.1.6"
 
 
 import os
 import sys
-import shutil
 
 from .config import Conf
 
@@ -34,7 +33,7 @@ def verify():
 verify()
 
 def helpme():
-    print('\n\tUsage: punct [arguments]\n')
+    print('\n\tUsage: punct [args]\n')
     print('\t                   No argument, shows list contents.')
     print('\t       -l          Same as no argument, Lists out list content.')
     print('\t       -h          Shows this dialog.')
@@ -46,6 +45,7 @@ def helpme():
     print('\t       -p          Purge all completed tasks.\n\
                             Creates backup file with the purged tasks.')
     print('\t       -d          Deletes all completed tasks. Irreversible.')
+    print('\t       -m          Merge list and list-backup, deleting backup.')
     print('')
 
 def add():
@@ -74,7 +74,10 @@ def display():
         i = 0
         for line in file:
             i += 1
-            print(str("{}   ".format(i)+line.strip("\n")))
+            if "-[x]" in line:
+                print(str("{}   ".format(i)+'\u0336'.join(line).strip("\n") + '\u0336'))
+            else:
+                print(str("{}   ".format(i)+line.strip("\n")))
         file.close()
         print('')
 
@@ -95,6 +98,55 @@ def remove():
         data[int(sys.argv[2])-1] = ""
         with open(Conf("path")+Conf("file"), 'w') as file:
             file.writelines( data )
+
+def purge():
+    bad_words = ['-[x]']
+
+    with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile, open(Conf("path")+Conf("file")+".bak", "a") as bakfile:
+        for line in oldfile:
+            if not any(bad_word in line for bad_word in bad_words):
+                tempfile.write(line)
+            elif any(bad_word in line for bad_word in bad_words):
+                bakfile.write(line+"\n")
+    with open(Conf("path")+Conf("file")+".tmp") as f:
+        with open(Conf("path")+Conf("file"), "w") as f1:
+            for line in f:
+                f1.write(line)
+    f.close()
+    f1.close()
+    tempfile.close()
+    bakfile.close()
+    os.remove(Conf("path")+Conf("file")+".tmp")
+
+def delete():
+    bad_words = ['-[x]']
+
+    with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile:
+        for line in oldfile:
+            if not any(bad_word in line for bad_word in bad_words):
+                tempfile.write(line)
+    with open(Conf("path")+Conf("file")+".tmp") as f:
+        with open(Conf("path")+Conf("file"), "w") as f1:
+            for line in f:
+                f1.write(line)
+    f.close()
+    f1.close()
+    tempfile.close()
+    os.remove(Conf("path")+Conf("file")+".tmp")
+
+def merge():
+    if not os.path.isfile(Conf("path")+Conf("file")+".bak"):
+        print("\nNo backup file found!\n")
+        raise SystemExit
+    if not os.path.isfile(Conf("path")+Conf("file")):
+        print("\nTodo-file not found!\n")
+        raise SystemExit
+    with open(Conf("path")+Conf("file"), "a") as mainfile, open(Conf("path")+Conf("file")+".bak", "r") as bakfile:
+        for line in bakfile:
+            mainfile.write("\n{}".format(line))
+    mainfile.close()
+    bakfile.close()
+    os.remove(Conf("path")+Conf("file")+".bak")
 
 # def setList():
 #     file = open('config.py', 'r')
@@ -136,70 +188,40 @@ def remove():
 #                 f.writelines( l )
 #                 f.close()
 
-def purge():
-    bad_words = ['-[x]']
-
-    with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile, open(Conf("path")+Conf("file")+".bak", "a") as bakfile:
-        for line in oldfile:
-            if not any(bad_word in line for bad_word in bad_words):
-                tempfile.write(line)
-            elif any(bad_word in line for bad_word in bad_words):
-                bakfile.write(line)
-    with open(Conf("path")+Conf("file")+".tmp") as f:
-        with open(Conf("path")+Conf("file"), "w") as f1:
-            for line in f:
-                f1.write(line)
-    f.close()
-    f1.close()
-    tempfile.close()
-    bakfile.close()
-    os.remove(Conf("path")+Conf("file")+".tmp")
-
-def delete():
-    bad_words = ['-[x]']
-
-    with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile:
-        for line in oldfile:
-            if not any(bad_word in line for bad_word in bad_words):
-                tempfile.write(line)
-    with open(Conf("path")+Conf("file")+".tmp") as f:
-        with open(Conf("path")+Conf("file"), "w") as f1:
-            for line in f:
-                f1.write(line)
-    f.close()
-    f1.close()
-    tempfile.close()
-    os.remove(Conf("path")+Conf("file")+".tmp")
 
 if len(sys.argv) > 3:
     print('\nToo many arguments!\nTip:\n    Enclosing text in quotation marks makes it one argument.\n')
     raise SystemExit
-
-if len(sys.argv) <= 1 or '-l' in sys.argv:
+elif len(sys.argv) <= 1 or '-l' in sys.argv:
     display()
-    raise SystemExit # prevent display from being ran twice, see bottom of file
+    raise SystemExit # prevent display from being run twice
 elif '-h' in sys.argv:
     helpme()
-    raise SystemExit # prevent display from being ran twice, see bottom of file
-elif '-a' in sys.argv:
-    add()
+    raise SystemExit # prevent display from being run
+elif '-c' in sys.argv:
+    check()
 elif '-r' in sys.argv:
     remove()
+elif '-a' in sys.argv:
+    add()
+elif '-p' in sys.argv:
+    purge()
 elif '-d' in sys.argv:
     delete()
+elif '-m' in sys.argv:
+    merge()
+elif '-v' in sys.argv:
+    print("\nYou are running punct v{}.\n".format(__version__))
+    raise SystemExit
 # elif '-s' in sys.argv:
 #     setList()
 #     raise SystemExit
 # elif '-f' in sys.argv:
 #     setFolder()
 #     raise SystemExit
-elif '-c' in sys.argv:
-    check()
-    #raise SystemExit # prevent display from being ran twice, see bottom of file
-elif '-p' in sys.argv:
-    purge()
 else:
-    print('Unknown operation: {}'.format(sys.argv))
+    print('\nUnknown operation: {}\n'.format(sys.argv))
+    raise SystemExit
 
 display()
 raise SystemExit
