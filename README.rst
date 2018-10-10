@@ -1,8 +1,9 @@
 ---------
 **Punct**
 ---------
+.. image:: https://api.travis-ci.org/runarsf/punct.svg?branch=
 
-    Punct is a simple shell application to manage all your todo-lists, made in python.
+Punct is a simple shell application to manage all your todo-lists, made in python.
 
 Prerequisites
 -------------
