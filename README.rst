@@ -11,7 +11,8 @@ Prerequisites
 - pip 18.1 (Python 3.7.0) or higher
 - Packages::
 
-	os, sys, getpass
+	Standard:
+	    os, sys, getpass, shutil
 
 Installation
 ------------
@@ -33,4 +34,6 @@ Usage
  -c Index      Check/Uncheck list item.
  -r Index      Remove list item.
  -a Content    Add an entry to the bottom of your list.
- -p            Purge all completed tasks. This is irreversible.
+ -p            Purge all completed tasks. 
+ 			   Creates backup file with the purged tasks.
+ -d            Deletes all completed tasks. Irreversible.
