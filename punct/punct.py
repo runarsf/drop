@@ -38,8 +38,6 @@ def helpme():
     print('\t       -v          Version.')
     print('\t       -l          Shows list contents.\n\
                              Executes on no argument as well')
-    # print('\t       -s List     Sets which todo list to use.')
-    # print('\t       -f Path     Sets list dir (folder)')
     print('\t       -c Index    Check/uncheck list item.')
     print('\t       -r Index    Remove list item.')
     print('\t       -a Content  Add an entry to the bottom of your list.')
@@ -149,46 +147,21 @@ def merge():
     bakfile.close()
     os.remove(Conf("path")+Conf("file")+".bak")
 
-# def setList():
-#     file = open('config.py', 'r')
-#     i = 0
-#     for line in file:
-#         i += 1
-#         if "filename" in line:
-#             with open('config.py', 'r') as file:
-#                 data = file.readlines()
-#                 data[i-1] = "\nfilename='{}'\n".format(sys.argv[2])
-#                 with open('config.py', 'w') as file:
-#                         file.writelines( data )
-#                 file.close()
+def userConfirm(word):
+    yes = ['Y', '']
+    no = ['n']
 
-#                 f = open('config.py', 'r')
-#                 l = [l for l in f.readlines() if l.strip()]
-#                 f.close()
-#                 f = open('config.py', 'w+')
-#                 f.writelines( l )
-#                 f.close()
-
-# def setFolder():
-#     file = open('config.py', 'r')
-#     i = 0
-#     for line in file:
-#         i += 1
-#         if "filepath" in line:
-#             with open('config.py', 'r') as file:
-#                 data = file.readlines()
-#                 data[i-1] = "\nfilepath='{}'\n".format(sys.argv[2])
-#                 with open('config.py', 'w') as file:
-#                         file.writelines( data )
-#                 file.close()
-
-#                 f = open('config.py', 'r')
-#                 l = [l for l in f.readlines() if l.strip()]
-#                 f.close()
-#                 f = open('config.py', 'w+')
-#                 f.writelines( l )
-#                 f.close()
-
+    print(word + " " + \
+        str(yes).replace("', '", "/").replace("['", "[").replace("']", "") + \
+        str(no).replace("', '", "/").replace("['", "").replace("']", "]"))
+    choice = input().lower()
+    if choice in str(yes).lower():
+       return True
+    elif choice in no:
+       return False
+    else:
+       raise TypeError
+       return False
 
 if len(sys.argv) > 3:
     print('\nToo many arguments!\nTip:\n    Enclosing text in quotation marks makes it one argument.\n')
@@ -214,12 +187,12 @@ elif '-m' in sys.argv:
 elif '-v' in sys.argv:
     print("\nYou are running punct v{}.\n".format(__version__))
     raise SystemExit
-# elif '-s' in sys.argv:
-#     setList()
-#     raise SystemExit
-# elif '-f' in sys.argv:
-#     setFolder()
-#     raise SystemExit
+elif '-uc' in sys.argv:
+    if userConfirm("This is a test"):
+        print("Yay!")
+    else:
+        print("Nay!")
+    raise SystemExit
 else:
     print('\nUnknown operation: {}\n'.format(sys.argv))
     raise SystemExit
