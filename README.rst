@@ -38,7 +38,9 @@ Usage
  -c Index      Check/Uncheck list item.
  -r Index      Remove list item.
  -a Content    Add an entry to the bottom of your list.
+ 			   Start content with '++' to add PRI tag.
  -p            Purge all completed tasks. 
  			   Creates backup file with the purged tasks.
  -d            Deletes all completed tasks. Irreversible.
  -m            Merge list and list-backup, deleting backup.
+ -e Index      Toggle entry elevation. Add/remove PRI tag.

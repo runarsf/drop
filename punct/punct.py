@@ -4,7 +4,7 @@
 """punct.punct: provides entry point main()."""
 
 
-__version__ = "1.1.7"
+__version__ = "1.2.0"
 
 
 import os
@@ -37,20 +37,25 @@ def helpme():
     print('\t       -h          Shows this dialog.')
     print('\t       -v          Version.')
     print('\t       -l          Shows list contents.\n\
-                             Executes on no argument as well')
+                           └ Executes on no argument as well')
     print('\t       -c Index    Check/uncheck list item.')
     print('\t       -r Index    Remove list item.')
-    print('\t       -a Content  Add an entry to the bottom of your list.')
+    print('\t       -a Content  Add an entry to the bottom of your list.\n\
+                           └ Start content with \'++\' to add PRI tag.')
     print('\t       -p          Purge all completed tasks.\n\
-                             Creates backup file with the purged tasks.')
+                           └ Creates backup file with the purged tasks.')
     print('\t       -d          Deletes all completed tasks. Irreversible.')
     print('\t       -m          Merge list and list-backup, deleting backup.')
+    print('\t       -e Index    Toggle entry elevation. Add/remove PRI tag.')
     print('')
 
 def add():
     try:
         file = open(Conf("path")+Conf("file"), 'a+')
-        file.write('\n-[]'+sys.argv[2])
+        if len(sys.argv) <= 2:
+            file.write('\n-[]'+userInput(">>> "))
+        else:
+            file.write('\n-[]'+sys.argv[2])
         file.close()
     except:
         print("Could not add entry to list.\nExiting...\n")
@@ -70,13 +75,24 @@ def display():
     finally:
         print('')
         file = open(Conf("path")+Conf("file"), 'r')
+        sp = "  "
         i = 0
         for line in file:
             i += 1
+            st = "   "
+            if line[:6] == "-[x]++" or line[:5] == "-[]++":
+                line = line.replace("++", "")
+                st = "PRI"
+            if i > 9:
+                sp = " "
+            elif i > 99:
+                sp = ""
             if "-[x]" in line:
-                print(str("{}   ".format(i)+'\u0336'.join(line).strip("\n") + '\u0336'))
+                line = line.replace("-[x]", "-[x] ")
+                print(str("\t{0}{1})  {2}  ".format(i, sp, st)+'\u0336'.join(line).strip("\n") + '\u0336'))
             else:
-                print(str("{}   ".format(i)+line.strip("\n")))
+                line = line.replace("-[]", "-[ ] ")
+                print(str("\t{0}{1})  {2}  ".format(i, sp, st)+line.strip("\n")))
         file.close()
         print('')
 
@@ -90,6 +106,15 @@ def check():
         with open(Conf("path")+Conf("file"), 'w') as file:
             file.writelines( data )
 
+def elevate():
+    with open(Conf("path")+Conf("file"), 'r') as file:
+        data = file.readlines()
+        if data[int(sys.argv[2])-1][:5] == "-[]++" or data[int(sys.argv[2])-1][:6] == "-[x]++":
+            data[int(sys.argv[2])-1] = data[int(sys.argv[2])-1].replace("-[]++", "-[]")
+        else:
+            data[int(sys.argv[2])-1] = data[int(sys.argv[2])-1].replace("-[]", "-[]++")
+        with open(Conf("path")+Conf("file"), 'w') as file:
+            file.writelines( data )
 
 def remove():
     with open(Conf("path")+Conf("file"), 'r') as file:
@@ -101,51 +126,54 @@ def remove():
 def purge():
     bad_words = ['-[x]']
 
-    with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile, open(Conf("path")+Conf("file")+".bak", "a") as bakfile:
-        for line in oldfile:
-            if not any(bad_word in line for bad_word in bad_words):
-                tempfile.write(line)
-            elif any(bad_word in line for bad_word in bad_words):
-                bakfile.write(line+"\n")
-    with open(Conf("path")+Conf("file")+".tmp") as f:
-        with open(Conf("path")+Conf("file"), "w") as f1:
-            for line in f:
-                f1.write(line)
-    f.close()
-    f1.close()
-    tempfile.close()
-    bakfile.close()
-    os.remove(Conf("path")+Conf("file")+".tmp")
+    if userConfirm("Are you sure?"):
+        with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile, open(Conf("path")+Conf("file")+".bak", "a") as bakfile:
+            for line in oldfile:
+                if not any(bad_word in line for bad_word in bad_words):
+                    tempfile.write(line)
+                elif any(bad_word in line for bad_word in bad_words):
+                    bakfile.write(line+"\n")
+        with open(Conf("path")+Conf("file")+".tmp") as f:
+            with open(Conf("path")+Conf("file"), "w") as f1:
+                for line in f:
+                    f1.write(line)
+        f.close()
+        f1.close()
+        tempfile.close()
+        bakfile.close()
+        os.remove(Conf("path")+Conf("file")+".tmp")
 
 def delete():
     bad_words = ['-[x]']
 
-    with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile:
-        for line in oldfile:
-            if not any(bad_word in line for bad_word in bad_words):
-                tempfile.write(line)
-    with open(Conf("path")+Conf("file")+".tmp") as f:
-        with open(Conf("path")+Conf("file"), "w") as f1:
-            for line in f:
-                f1.write(line)
-    f.close()
-    f1.close()
-    tempfile.close()
-    os.remove(Conf("path")+Conf("file")+".tmp")
+    if userConfirm("Are you sure? This action is irreversible."):
+        with open(Conf("path")+Conf("file")) as oldfile, open(Conf("path")+Conf("file")+".tmp", 'w') as tempfile:
+            for line in oldfile:
+                if not any(bad_word in line for bad_word in bad_words):
+                    tempfile.write(line)
+        with open(Conf("path")+Conf("file")+".tmp") as f:
+            with open(Conf("path")+Conf("file"), "w") as f1:
+                for line in f:
+                    f1.write(line)
+        f.close()
+        f1.close()
+        tempfile.close()
+        os.remove(Conf("path")+Conf("file")+".tmp")
 
 def merge():
-    if not os.path.isfile(Conf("path")+Conf("file")+".bak"):
-        print("\nNo backup file found!\n")
-        raise SystemExit
-    if not os.path.isfile(Conf("path")+Conf("file")):
-        print("\nTodo-file not found!\n")
-        raise SystemExit
-    with open(Conf("path")+Conf("file"), "a") as mainfile, open(Conf("path")+Conf("file")+".bak", "r") as bakfile:
-        for line in bakfile:
-            mainfile.write("\n{}".format(line))
-    mainfile.close()
-    bakfile.close()
-    os.remove(Conf("path")+Conf("file")+".bak")
+    if userConfirm("Are you sure?"):
+        if not os.path.isfile(Conf("path")+Conf("file")+".bak"):
+            print("\nNo backup file found!\n")
+            raise SystemExit
+        if not os.path.isfile(Conf("path")+Conf("file")):
+            print("\nTodo-file not found!\n")
+            raise SystemExit
+        with open(Conf("path")+Conf("file"), "a") as mainfile, open(Conf("path")+Conf("file")+".bak", "r") as bakfile:
+            for line in bakfile:
+                mainfile.write("\n{}".format(line))
+        mainfile.close()
+        bakfile.close()
+        os.remove(Conf("path")+Conf("file")+".bak")
 
 def userConfirm(word):
     yes = ['Y', '']
@@ -162,6 +190,11 @@ def userConfirm(word):
     else:
        raise TypeError
        return False
+
+def userInput(word):
+    print(word)
+    choice = input()
+    return choice
 
 if len(sys.argv) > 3:
     print('\nToo many arguments!\nTip:\n    Enclosing text in quotation marks makes it one argument.\n')
@@ -184,14 +217,10 @@ elif '-d' in sys.argv:
     delete()
 elif '-m' in sys.argv:
     merge()
+elif '-e' in sys.argv:
+    elevate()
 elif '-v' in sys.argv:
     print("\nYou are running punct v{}.\n".format(__version__))
-    raise SystemExit
-elif '-uc' in sys.argv:
-    if userConfirm("This is a test"):
-        print("Yay!")
-    else:
-        print("Nay!")
     raise SystemExit
 else:
     print('\nUnknown operation: {}\n'.format(sys.argv))
