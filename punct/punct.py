@@ -37,7 +37,7 @@ def helpme():
     print('\t       -h          Shows this dialog.')
     print('\t       -v          Version.')
     print('\t       -l          Shows list contents.\n\
-                           └ Executes on no argument as well')
+                           └ Executes on no argument as well.')
     print('\t       -c Index    Check/uncheck list item.')
     print('\t       -r Index    Remove list item.')
     print('\t       -a Content  Add an entry to the bottom of your list.\n\
