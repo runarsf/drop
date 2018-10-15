@@ -4,7 +4,7 @@
 """punct.punct: provides entry point main()."""
 
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 
 import os
@@ -12,6 +12,7 @@ import sys
 
 from .config import Conf
 
+tabsize = Conf('tabsize')
 path = (os.path.dirname(os.path.realpath(__file__)))
 
 def verify():
@@ -73,7 +74,7 @@ def display():
         print("Could not remove whitespace from list contents.\nExiting...\n")
         raise SystemExit
     finally:
-        print('')
+        print('\n\t[{}]\n'.format(Conf("file")).expandtabs(int(tabsize/1.2)))
         file = open(Conf("path")+Conf("file"), 'r')
         sp = "  "
         i = 0
@@ -88,11 +89,11 @@ def display():
             elif i > 99:
                 sp = ""
             if "-[x]" in line:
-                line = line.replace("-[x]", "-[x] ")
-                print(str("\t{0}{1})  {2}  ".format(i, sp, st)+'\u0336'.join(line).strip("\n") + '\u0336'))
+                line = line.replace("-[x]", "[x] ")
+                print(str("\t{0}{1})  {2}  ".format(i, sp, st)+'\u0336'.join(line).strip("\n") + '\u0336').expandtabs(int(tabsize)))
             else:
-                line = line.replace("-[]", "-[ ] ")
-                print(str("\t{0}{1})  {2}  ".format(i, sp, st)+line.strip("\n")))
+                line = line.replace("-[]", "[ ] ")
+                print(str("\t{0}{1})  {2}  ".format(i, sp, st)+line.strip("\n")).expandtabs(int(tabsize)))
         file.close()
         print('')
 
@@ -119,7 +120,11 @@ def elevate():
 def remove():
     with open(Conf("path")+Conf("file"), 'r') as file:
         data = file.readlines()
-        data[int(sys.argv[2])-1] = ""
+        if data[int(sys.argv[2])-1][:6] == "-[x]++" or data[int(sys.argv[2])-1][:5] == "-[]++":
+            if userConfirm("Are you sure you want to delete tagged entry?"):
+                data[int(sys.argv[2])-1] = ""
+        else:
+            data[int(sys.argv[2])-1] = ""
         with open(Conf("path")+Conf("file"), 'w') as file:
             file.writelines( data )
 
