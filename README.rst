@@ -1,7 +1,10 @@
 ---------
 **Punct**
 ---------
-.. image:: https://api.travis-ci.org/runarsf/punct.svg?branch=
+.. image:: https://travis-ci.org/runarsf/punct.svg?branch=master
+    :target: https://travis-ci.org/runarsf/punct
+.. image:: https://img.shields.io/badge/License-MIT-yellow.svg?
+    :target: https://opensource.org/licenses/MIT
 
 Punct is a simple shell application to manage all your todo-lists, made in python.
 
@@ -39,8 +42,8 @@ Usage
  -r Index      Remove list item.
  -a Content    Add an entry to the bottom of your list.
  			   Start content with '++' to add PRI tag.
- -p            Purge all completed tasks. 
- 			   Creates backup file with the purged tasks.
+ -p            Purge all completed tasks.
+ 			   Creates a backup file with the purged tasks.
  -d            Deletes all completed tasks. Irreversible.
- -m            Merge list and list-backup, deleting backup.
+ -m            Merge list and list-backup, deleting the backup.
  -e Index      Toggle entry elevation. Add/remove PRI tag.
