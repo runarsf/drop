@@ -3,8 +3,13 @@
 ---------
 .. image:: https://travis-ci.org/runarsf/punct.svg?branch=master
     :target: https://travis-ci.org/runarsf/punct
+    :alt: Newest build
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg?
     :target: https://opensource.org/licenses/MIT
+    :alt: License
+.. image:: https://pypip.in/v/punct/badge.png
+    :target: https://pypi.org/project/punct/
+    :alt: PyPI version
 
 Punct is a simple shell application to manage all your todo-lists, made in python.
 
