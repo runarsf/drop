@@ -26,7 +26,7 @@ setup(
     version = version,
     description = ("A simple todo-list manager."),
     long_description=read('README.rst'),
-    author = "Runar Fredagsvik",
+    author = "runarsf",
     author_email = "runarsf@protonmail.com",
     url = "https://github.com/runarsf/punct",
 
