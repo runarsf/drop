@@ -13,8 +13,8 @@
 
 Punct is a simple shell application to manage all your todo-lists, made in python.
 
-Prerequisites
--------------
+Prerequisites & requirements
+----------------------------
 
 - Python 3.7.0 or higher
 - pip 18.1 (Python 3.7.0) or higher
